@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import CoinDetailsClient from './CoinDetailsClient';
+import CoinGraph from './CoinGraph';
 
 type Coin = {
   id: string;
@@ -24,7 +24,9 @@ async function getCoin(id: string): Promise<Coin> {
     headers: {
       Authorization: `Bearer ${process.env.MY_API_KEY}`,
     },
-    cache: 'no-store', 
+    next: {
+      revalidate: 60, 
+    },  
   });
 
   if (!res.ok) {
@@ -49,7 +51,7 @@ export default async function CoinPage({ params }: CoinPageProps) {
       </Link>
 
       <h1 className="text-3xl font-bold mb-4">{coin.name} ({coin.symbol})</h1>
-      <CoinDetailsClient id={coin.id} initialPrice={coin.priceUsd} />
+      <CoinGraph id={coin.id} initialPrice={coin.priceUsd} />
 
       <div className="grid grid-cols-2 gap-4 mt-6 text-sm">
         <div><strong>Rank:</strong> {coin.rank}</div>

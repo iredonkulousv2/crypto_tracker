@@ -1,5 +1,4 @@
-import { setCoins } from '../store/slices/cryptoSlice';
-import { store } from '../store/store'
+
 import CryptoTable from '../components/cryptoTable';
 import ThemeToggle from '@/components/ThemeToggle';
 
@@ -20,7 +19,9 @@ async function getTopCoins(): Promise<Coin[]> {
     headers: {
       Authorization: `Bearer ${process.env.MY_API_KEY}`,
     },
-    cache: 'no-store', 
+    next: {
+      revalidate: 60, 
+    }, 
   });
 
   if (!res.ok) {
@@ -34,8 +35,6 @@ async function getTopCoins(): Promise<Coin[]> {
 export default async function HomePage() {
   const coins = await getTopCoins();
 
- 
-  store.dispatch(setCoins(coins));
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">

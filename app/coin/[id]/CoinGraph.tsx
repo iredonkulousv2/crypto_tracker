@@ -20,7 +20,7 @@ type PricePoint = {
   price: number;
 };
 
-export default function CoinDetailsClient({ id, initialPrice }: Props) {
+export default function CoinGraph({ id, initialPrice }: Props) {
   const [priceData, setPriceData] = useState<PricePoint[]>([
     {
       time: new Date().toLocaleTimeString(),
@@ -31,16 +31,19 @@ export default function CoinDetailsClient({ id, initialPrice }: Props) {
   useEffect(() => {
     const fetchPrice = async () => {
       try {
-        const res = await fetch(
-          `https://rest.coincap.io/v3/assets/${id}?apiKey=999e1c6f1dec7528b047efec72a6158fed584a1ef50c38450e1e5c19899a4070`,
-          { cache: 'no-store' }
-        );
+  
+        const res = await fetch(`https://rest.coincap.io/v3/assets/${id}`, {
+          cache: 'no-store',
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
+          },
+        });
 
         const data = await res.json();
         const newPrice = parseFloat(data.data.priceUsd);
 
         setPriceData((prev) => [
-          ...prev.slice(-19),
+          ...prev.slice(-49),
           {
             time: new Date().toLocaleTimeString(),
             price: newPrice,
@@ -51,7 +54,7 @@ export default function CoinDetailsClient({ id, initialPrice }: Props) {
       }
     };
 
-    const interval = setInterval(fetchPrice, 5000);
+    const interval = setInterval(fetchPrice, 2000);
     return () => clearInterval(interval);
   }, [id]);
 
@@ -63,7 +66,7 @@ export default function CoinDetailsClient({ id, initialPrice }: Props) {
       <p className="text-2xl font-bold text-green-600 dark:text-green-400 mb-3">
         ${latestPrice.toFixed(2)}
       </p>
-      <div className="h-64 w-full bg-white dark:bg-gray-900 p-4 rounded-lg shadow">
+      <div className="h-64 w-full bg-white dark:bg-gray-100 p-4 rounded-lg shadow">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={priceData}>
             <XAxis dataKey="time" tick={{ fontSize: 12 }} />
