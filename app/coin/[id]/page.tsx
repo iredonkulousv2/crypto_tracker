@@ -32,7 +32,7 @@ async function getCoin(id: string): Promise<Coin> {
 }
 
 export default async function CoinPage({ params }: { params: { id: string } }) {
-  const { id } = await params;
+  const { id } = params;
   const coin = await getCoin(id);
 
   return (
