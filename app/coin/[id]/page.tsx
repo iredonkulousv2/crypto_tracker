@@ -13,6 +13,10 @@ type Coin = {
   supply: string;
 };
 
+type CoinPageProps = {
+  params: Promise<{ id: string }>
+};
+
 async function getCoin(id: string): Promise<Coin> {
 
 
@@ -31,8 +35,8 @@ async function getCoin(id: string): Promise<Coin> {
   return data.data;
 }
 
-export default async function CoinPage({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default async function CoinPage({ params }: CoinPageProps) {
+  const { id } = await params;
   const coin = await getCoin(id);
 
   return (
