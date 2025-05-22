@@ -1,14 +1,15 @@
-#  Crypto Tracker
+# 🪙 Crypto Tracker App
 
-A responsive cryptocurrency tracker built with **Next.js 14**, **TypeScript**, and **Tailwind CSS**. This app fetches real-time data from the CoinCap API and allows users to view, sort, and inspect detailed information about top cryptocurrencies.
+A modern cryptocurrency tracker that displays the top 20 cryptocurrencies by market cap. Built with **Next.js (App Router)**, **Tailwind CSS**, and **Redux Toolkit**, this app supports server-side rendering, client-side interactivity, and real-time graph updates.
+
+---
 
 ## 🚀 Features
 
-- Live data for top cryptocurrencies
-- Sortable table (by price, market cap, 24h % change)
-- Clickable rows to navigate to detailed coin pages
-- Responsive and clean UI with Tailwind CSS
-- Dark mode support
+- Server-rendered homepage using the App Router
+- Sortable table (client component)
+- Dark Mode Support
+- Modern web stack: Next.js (App Router), Tailwind CSS, Redux Toolkit
 
 ---
 
@@ -22,39 +23,34 @@ git clone https://github.com/iredonkulousv2/crypto-tracker.git
 cd crypto-tracker
 2. Install dependencies
 npm install
+3.Set up environment variables
+NEXT_PUBLIC_API_URL= Your Api Key from coincap.io
 3. Run the development server
 npm run dev
 Open http://localhost:3000 in your browser to see the app.
 
-🧱 Architecture & Approach
-Tech Stack
-Next.js 14 (App Router)
+🏗️ Architecture & Approach
+📁 Folder Structure (App Router)
+app/
+Root of the routing system using the new App Router.
 
-TypeScript
+page.tsx – Homepage server component using fetch() for SSR
 
-Tailwind CSS
+coin/[id]/page.tsx – Dynamic coin pages that fetch and display real-time data
 
-Structure
-app/: Main application pages using Next.js App Router
 
-components/: Reusable UI components like CryptoTable
+⚙️ Data Fetching
+Homepage (app/page.tsx):
+A Server Component that fetches the top 20 cryptocurrencies using the native fetch() API. Data is passed down to a Client Component (<CryptoTable />) that enables sorting.
 
-store/: Manages global application state using Redux Toolkit, including store configuration, slices, and related utilities.
-
-Data Flow
-Data is fetched from the CoinCap API
-
-Crypto table supports client-side sorting
-
-Navigation to detail pages is handled using Next.js dynamic routes
+Coin Page (app/coin/[id]/page.tsx):
+A Server Component for static structure. It includes a Client Component that sets up polling (every 2s) to fetch live price data and render an updating chart.
 
 📐 Assumptions & Trade-offs
-Client-Side Sorting: All sorting is handled client-side for speed and simplicity. This may become inefficient with very large datasets.
+Real-time updates:
+Implemented using polling (setInterval) every 2 second. WebSockets would be more efficient, but polling simplifies deployment and avoids a custom backend.
 
-Public API Usage: The app directly queries the public CoinCap API with no caching or rate-limiting safeguards.
-
-No Authentication: The app is open to all users with no login or personalization features.
-
-Mobile Responsiveness: Tailwind ensures the UI is responsive on mobile devices, but more testing could improve polish across breakpoints.
+**Redux may be overkill for this app:**  
+  Given the small size and simplicity of the app, especially with data only being passed one level down (from page to table), using Redux for global state management added unnecessary complexity. Prop drilling would have sufficed for managing the coin data, and using lightweight state management (like `useState` or `useContext`) could simplify the codebase.
 
 

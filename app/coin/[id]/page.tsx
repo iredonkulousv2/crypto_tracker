@@ -22,7 +22,7 @@ async function getCoin(id: string): Promise<Coin> {
 
   const res = await fetch(`https://rest.coincap.io/v3/assets/${id}`, {
     headers: {
-      Authorization: `Bearer ${process.env.MY_API_KEY}`,
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
     },
     next: {
       revalidate: 60, 
