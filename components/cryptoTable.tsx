@@ -72,7 +72,7 @@ export default function CryptoTable({ coins }: Props) {
           {sortedCoins.map((coin) => (
             <tr
               key={coin.id}
-              className="hover:bg-gray-50 dark:hover:bg-gray-200 transition cursor-pointer"
+              className="hover:bg-gray-50 dark:hover:bg-gray-400 transition cursor-pointer"
             >
               <td className="p-3 border-b border-gray-300 dark:border-gray-600  ">
                 {coin.rank}
